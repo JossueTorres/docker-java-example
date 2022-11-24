@@ -32,7 +32,7 @@ pipeline {
  
         stage ('Build & push') {
             steps {
-                withMaven() {
+                container() {
                     sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/docker-spring-boot/pom.xml clean package'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
