@@ -22,13 +22,13 @@ pipeline {
             }
         }
 
-        stage ('unit test') {
-            steps {
-                withMaven() {
-                    sh 'mvn clean  -gs `pwd`/docker-spring-boot/pom.xml test'
-                }
-            }
-        }
+        // stage ('unit test') {
+        //     steps {
+        //         withMaven() {
+        //             sh 'mvn clean  -gs `pwd`/docker-spring-boot/pom.xml test'
+        //         }
+        //     }
+        // }
  
         stage ('build & push') {
             steps {
