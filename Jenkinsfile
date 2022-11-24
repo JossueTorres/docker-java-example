@@ -16,7 +16,7 @@ pipeline {
     }
 
     stages {
-        stage ('checkout scm') {
+        stage ('Checkout scm') {
             steps {
                 checkout(scm)
             }
@@ -30,7 +30,7 @@ pipeline {
         //     }
         // }
  
-        stage ('build & push') {
+        stage ('Build & push') {
             steps {
                 withMaven() {
                     sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/docker-spring-boot/pom.xml clean package'
