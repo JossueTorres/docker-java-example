@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    node {
-      label 'maven'
-    }
-  }
+  agent any
 
     parameters {
         string(name:'TAG_NAME',defaultValue: '',description:'')
@@ -28,7 +24,7 @@ pipeline {
 
         stage ('unit test') {
             steps {
-                container ('maven') {
+                withMaven() {
                     sh 'mvn clean  -gs `pwd`/docker-spring-boot/pom.xml test'
                 }
             }
@@ -36,7 +32,7 @@ pipeline {
  
         stage ('build & push') {
             steps {
-                container ('maven') {
+                withMaven() {
                     sh 'mvn  -Dmaven.test.skip=true -gs `pwd`/docker-spring-boot/pom.xml clean package'
                     sh 'docker build -f Dockerfile-online -t $REGISTRY/$DOCKERHUB_NAMESPACE/$APP_NAME:SNAPSHOT-$BRANCH_NAME-$BUILD_NUMBER .'
                     withCredentials([usernamePassword(passwordVariable : 'DOCKER_PASSWORD' ,usernameVariable : 'DOCKER_USERNAME' ,credentialsId : "$DOCKER_CREDENTIAL_ID" ,)]) {
